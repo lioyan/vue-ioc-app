@@ -6,12 +6,20 @@
 
 <script lang="ts">
 import Vue from 'vue';
-
+import HelloWorldService from './HelloWorl.service'
 export default Vue.extend({
   name: 'HelloWorld',
   props: {
     msg: String,
   },
+  serviceInject() {
+    return {
+      helloWorldService: HelloWorldService
+    }
+  },
+  mounted() {
+    // console.log(this.helloWorldService.getMsg())
+  }
 });
 </script>
 

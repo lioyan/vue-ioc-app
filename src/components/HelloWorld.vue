@@ -1,10 +1,11 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <button @click="getMsg">getMsg</button>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue';
 import HelloWorldService from './HelloWorl.service'
 export default Vue.extend({
@@ -18,7 +19,13 @@ export default Vue.extend({
     }
   },
   mounted() {
-    // console.log(this.helloWorldService.getMsg())
+    console.log('hellowWorldService:', this.helloWorldService.getMsg())
+    console.log('infoService:', this.helloWorldService.getName())
+  },
+  methods: {
+    getMsg(){
+      console.log(this.helloWorldService.getMsg())
+    }
   }
 });
 </script>

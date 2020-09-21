@@ -6,5 +6,5 @@ export const isClassProvider = <T>(provider: Provider<T>): boolean =>
 export const isValueProvider = <T>(provider: Provider<T>): boolean =>
   (provider as ValueProvider<T>).useValue !== undefined;
 
-export const isFactoryProvider = <T>(provider: Provider<T>):boolean =>
-  (provider as FactoryProvider<T>).useFactory !== undefined 
+export const isFactoryProvider = <T>(provider: Provider<T>): boolean =>
+  (provider as FactoryProvider<T>).useFactory !== undefined;

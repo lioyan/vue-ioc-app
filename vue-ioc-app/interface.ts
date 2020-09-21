@@ -1,9 +1,11 @@
+import { INJECTED } from './injectable'
 export interface ContainerInterface {
   register<T>(provider: Provider<T>): void;
   inject<T>(token: Type<T>): T;
 }
 
 export interface Type<T> extends Function {
+  [INJECTED]?: Type<any>[]
   new (...args: any[]): T;
 }
 

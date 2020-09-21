@@ -8,6 +8,7 @@ import {
   FactoryProvider
 } from "./interface";
 import { isClassProvider, isValueProvider, isFactoryProvider } from "./util";
+import { INJECTED } from "./injectable";
 export class Container implements ContainerInterface {
   private _providers = new Map();
   /**
@@ -28,8 +29,18 @@ export class Container implements ContainerInterface {
    * @param provider
    */
   private getInstanceFromClass<T>(provider: ClassProvider<T>): T {
-    const instance = provider.useClass;
-    return new instance();
+    const target = provider.useClass;
+    if (target[INJECTED]) {
+      const injects = target[INJECTED]!.map(childToken => this.inject(childToken));
+      return new target(...injects)
+    } else {
+      if(target.length) {
+        throw new Error(
+          `Injection error.${target.name} has dependancy injection but,but no @Injectable() or @Inject() decorate it`
+        )
+      }
+      return new target();
+    }
   }
   /**
    * @description 实例化value类型的provider
@@ -51,11 +62,13 @@ export class Container implements ContainerInterface {
     this._providers.set((provider as BaseProvider<T>).provide, instance);
   }
   inject<T>(token: Type<T>): T {
-    const instance = this._providers.get(token);
-    if (this._providers.has(token)) {
-      return instance;
-    } else {
-      return instance;
+    if (!this._providers.has(token)) {
+      const provider = {
+        provide: token,
+        useClass: token
+      };
+      this.register(provider);
     }
+    return this._providers.get(token);
   }
 }
